@@ -1,5 +1,203 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+# Git Workflow & Commit Standards
+
+## Conventional Commit Format
+
+**MANDATORY**: All commits MUST follow this exact format:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+## Commit Types & Scopes
+
+**Types**: feat, fix, docs, style, refactor, test, chore, perf, ci, revert
+
+**RAG System Scopes**: auth, api, ui, docs, search, db, config, vector, ai
+
+## Commit Examples
+
+### ✅ Good Commits
+```bash
+# Feature development
+feat(docs): add document upload with file validation
+feat(search): implement semantic similarity search
+feat(ui): add document upload progress indicator
+feat(auth): implement OAuth2 login with JWT tokens
+
+# Bug fixes  
+fix(api): resolve file upload timeout for large documents
+fix(search): correct embedding dimension mismatch error
+fix(ui): resolve infinite loading on document search
+
+# Infrastructure & optimization
+perf(search): optimize vector query performance
+ci(deploy): add staging environment deployment pipeline
+chore(deps): upgrade OpenAI SDK to v4.20.1
+docs(api): add OpenAPI specifications for document endpoints
+```
+
+### ❌ Bad Commits
+```bash
+update code           # Too vague
+added login feature   # Missing type
+Fix: bug in search    # Inconsistent format
+feat: add login and fix search bug  # Multiple changes
+```
+
+## Commit Guidelines
+
+### 1. Atomic Commits
+- One logical change per commit
+- Independently deployable
+- Follow TDD cycle: test → implement → refactor
+
+### 2. Clear Descriptions  
+- Imperative mood ("add", not "added")
+- Be specific about changes
+- Reference tasks: "Closes T-XXX"
+
+### 3. Breaking Changes
+```bash
+feat(api)!: change user authentication response format
+
+BREAKING CHANGE: Login endpoint structure changed.
+Before: { "user": {...}, "token": "..." }
+After: { "data": { "user": {...}, "access_token": "..." } }
+```
+
+## Branch Strategy
+
+Follow [docs/DEVELOPMENT_GUIDE.md](mdc:docs/DEVELOPMENT_GUIDE.md) Git Flow:
+
+```bash
+# Branch naming
+feature/T-XXX-descriptive-name
+bugfix/T-XXX-description  
+hotfix/critical-issue
+docs/api-specification-update
+
+# Workflow
+git checkout develop
+git pull origin develop
+git checkout -b feature/T-123-new-feature
+# ... development work ...
+git push -u origin feature/T-123-new-feature
+# Create PR using [.github/pull_request_template.md](mdc:.github/pull_request_template.md)
+```
+
+## Pre-Commit Quality Gates
+
+Before EVERY commit, ensure compliance with [development-guidelines.mdc](mdc:.cursor/rules/development-guidelines.mdc):
+
+✅ **Code Quality**
+- [ ] Follows established patterns (≤20 lines per function)
+- [ ] No magic numbers or hardcoded values
+- [ ] Comprehensive error handling
+- [ ] Security considerations addressed
+
+✅ **Testing & Environment**
+- [ ] Tests written following TDD ([tdd-workflow.mdc](mdc:.cursor/rules/tdd-workflow.mdc))
+- [ ] All tests pass (unit + integration)
+- [ ] Pre-commit hooks pass ([.pre-commit-config.yaml](mdc:.pre-commit-config.yaml))
+- [ ] No debug code or secrets
+
+## TDD Workflow Integration
+
+```bash
+# TDD cycle commits
+git commit -m "test: add document validation tests"      # RED
+git commit -m "feat(docs): implement basic validation"   # GREEN  
+git commit -m "refactor(docs): enhance validation arch"  # REFACTOR
+```
+
+## RAG System Commit Patterns
+
+```bash
+# Document processing
+feat(docs): implement PDF text extraction pipeline
+fix(docs): resolve chunking algorithm edge cases
+perf(docs): optimize document preprocessing
+
+# Vector operations
+feat(vector): add Milvus collection management
+fix(vector): correct embedding dimension validation
+perf(vector): implement query result caching
+
+# AI integration  
+feat(ai): integrate OpenAI embeddings API
+fix(ai): handle rate limiting with exponential backoff
+perf(ai): implement prompt caching for similar queries
+
+# Search functionality
+feat(search): implement hybrid search (keyword + semantic)
+fix(search): resolve pagination issues in results
+perf(search): optimize query execution time
+```
+
+## Git Commands & Templates
+
+### Commit Template Setup
+```bash
+git config commit.template ~/.gitmessage
+```
+
+Template (`~/.gitmessage`):
+```
+type(scope): brief description (≤50 chars)
+
+# Why is this change needed? (Body - wrap at 72 chars)
+# 
+# How does it address the issue?
+# 
+# Any breaking changes or side effects?
+# 
+# Closes T-XXX
+```
+
+### Useful Commands
+```bash
+# Interactive staging for atomic commits
+git add -p
+
+# Review staged changes
+git diff --staged
+
+# Interactive rebase to clean history
+git rebase -i HEAD~3
+```
+
+## CI/CD Integration
+
+Commit format integrates with automated workflows:
+- [.github/workflows/frontend-ci.yml](mdc:.github/workflows/frontend-ci.yml)
+- [.github/workflows/backend-ci.yml](mdc:.github/workflows/backend-ci.yml)
+- [.github/workflows/main-ci.yml](mdc:.github/workflows/main-ci.yml)
+
+Features:
+- Commit message validation via pre-commit hooks
+- Automatic changelog generation
+- Semantic version bumping based on types
+
+## Quality Metrics
+
+Track these commit quality indicators:
+- **Size**: Prefer small, focused commits (<100 lines)
+- **Message Quality**: Clear, descriptive following conventions
+- **Atomicity**: One logical change per commit
+- **Build Success**: Every commit maintains working codebase
+- **Test Coverage**: Commits maintain or improve coverage
+
+Remember: Good commit history documents how the RAG system evolved. Each commit should tell a clear story of logical development progression.
+
+
+
+

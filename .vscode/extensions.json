@@ -1,0 +1,69 @@
+{
+    "recommendations": [
+        // Python 개발
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.mypy-type-checker",
+        // JavaScript/TypeScript 개발
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        // React/Next.js 개발
+        "ms-vscode.vscode-react-javascript-snippets",
+        "burkeholland.simple-react-snippets",
+        // Docker & 컨테이너
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        // Git 관련
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "github.copilot",
+        "github.copilot-chat",
+        // 마크다운 & 문서
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "bierner.markdown-mermaid",
+        // 코드 품질 & 린팅
+        "ms-vscode.vscode-eslint",
+        "streetsidesoftware.code-spell-checker",
+        "ms-vscode.hexeditor",
+        // YAML & JSON
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-json",
+        // 테스트
+        "ms-vscode.test-adapter-converter",
+        "hbenl.vscode-test-explorer",
+        // 인프라 & DevOps
+        "hashicorp.terraform",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "github.vscode-github-actions",
+        // 유틸리티
+        "christian-kohler.npm-intellisense",
+        "eg2.vscode-npm-script",
+        "ms-vscode.powershell",
+        "redhat.vscode-xml",
+        // 테마 & UI (선택사항)
+        "pkief.material-icon-theme",
+        "zhuangtongfa.material-theme",
+        // API 개발
+        "rangav.vscode-thunder-client",
+        "humao.rest-client",
+        // 보안
+        "ms-vscode.vscode-security-linter",
+        // 생산성
+        "alefragnani.bookmarks",
+        "gruntfuggly.todo-tree",
+        "aaron-bond.better-comments",
+        // 프로젝트 관리
+        "ms-vscode.vscode-project-manager",
+        "johnpapa.vscode-peacock"
+    ],
+    "unwantedRecommendations": [
+        "ms-python.pylint",
+        "ms-python.autopep8"
+    ]
+}

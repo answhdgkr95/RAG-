@@ -1,5 +1,194 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# Development Guidelines
+
+## Core Principles
+
+Expert RAG system development with rigorous adherence to:
+
+### 1. Single Responsibility & Explicit Design
+- One responsibility per function/class/module
+- Explicit dependencies, no hidden state
+- Max 20 lines per function, 3 parameters max
+- Early returns over nested conditions
+
+### 2. Security by Default
+- Authenticate before sensitive operations
+- Validate ALL inputs at boundaries
+- Environment variables for secrets
+- No sensitive data in error messages
+
+## Technology Standards
+
+### Frontend (React/Next.js)
+```typescript
+// ✅ Component pattern
+interface DocumentUploadProps {
+  onUpload: (file: File) => void;
+  maxSize?: number;
+}
+
+export const DocumentUpload: React.FC<DocumentUploadProps> = ({
+  onUpload,
+  maxSize = 10 * 1024 * 1024
+}) => {
+  // Component logic
+  return <div className="upload-container">{/* JSX */}</div>;
+};
+
+// ✅ Zustand store pattern
+interface DocumentState {
+  documents: Document[];
+  isLoading: boolean;
+  error: string | null;
+  uploadDocument: (file: File) => Promise<void>;
+}
+```
+
+### Backend (FastAPI/Python)
+```python
+# ✅ API router pattern
+@router.post("/", response_model=DocumentResponse)
+async def upload_document(
+    document: DocumentCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+) -> DocumentResponse:
+    try:
+        service = DocumentService(db)
+        return await service.create_document(document, current_user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# ✅ Service pattern
+class DocumentService:
+    def __init__(self, db: Session):
+        self.db = db
+    
+    async def create_document(self, data: DocumentSchema) -> Document:
+        try:
+            document = Document(**data.dict())
+            self.db.add(document)
+            self.db.commit()
+            return document
+        except Exception as e:
+            self.db.rollback()
+            raise HTTPException(status_code=400, detail=f"Creation failed: {e}")
+```
+
+## Naming & Structure
+
+- **Classes**: PascalCase (UserService, DocumentProcessor)
+- **Functions**: camelCase (processDocument, validateUser)  
+- **Constants**: UPPER_SNAKE_CASE (MAX_FILE_SIZE)
+- **Booleans**: is/has/can prefix (isValid, hasPermission)
+
+**File Organization** (Reference [docs/DEVELOPMENT_GUIDE.md](mdc:docs/DEVELOPMENT_GUIDE.md)):
+```
+frontend/components/common/     # Shared components
+backend/api/v1/                 # API endpoints
+backend/services/               # Business logic
+```
+
+## Error Handling
+
+### Frontend
+```typescript
+try {
+  const result = await apiCall();
+  return result;
+} catch (error) {
+  if (error instanceof ValidationError) {
+    setError('입력값을 확인해주세요.');
+  } else {
+    setError('알 수 없는 오류가 발생했습니다.');
+    console.error('Unexpected error:', error);
+  }
+}
+```
+
+### Backend
+```python
+async def process_document(file: UploadFile) -> ProcessedDocument:
+    try:
+        if not file.content_type.startswith('application/'):
+            raise ValidationError("지원하지 않는 파일 형식입니다.")
+        return await document_processor.process(await file.read())
+    except ValidationError:
+        raise
+    except Exception as e:
+        logger.error(f"Processing failed: {e}")
+        raise HTTPException(status_code=500, detail="처리 중 오류가 발생했습니다.")
+```
+
+## Quality Gates
+
+Before ANY code submission:
+1. ✅ Single responsibility maintained
+2. ✅ No magic numbers/hardcoded values  
+3. ✅ Comprehensive error handling
+4. ✅ Security validated
+5. ✅ Tests follow TDD ([tdd-workflow.mdc](mdc:.cursor/rules/tdd-workflow.mdc))
+6. ✅ Pre-commit hooks pass ([.pre-commit-config.yaml](mdc:.pre-commit-config.yaml))
+
+## RAG System Specifics
+
+### Document Processing
+- Efficient chunking for vector storage
+- Streaming for large files
+- Thorough file validation
+- API rate limiting
+
+### Vector Operations  
+- Appropriate embedding strategies
+- Graceful error handling
+- Caching for expensive operations
+- Usage monitoring
+
+### Security
+- File upload sanitization
+- Access control implementation
+- AI content validation
+- Security event logging
+
+## Environment Integration
+
+- Follow [.vscode/settings.json](mdc:.vscode/settings.json) configuration
+- Use [.vscode/extensions.json](mdc:.vscode/extensions.json) recommendations
+- Quality tools: ESLint, Prettier (Frontend); Black, flake8, mypy (Backend)
+
+## Anti-Patterns
+
+❌ **Avoid:**
+```javascript
+// Multiple responsibilities + magic numbers + vague errors
+function processUserData(userData) {
+  const user = validateUser(userData);
+  if (file.size > 10485760) throw new Error('Error occurred');
+  return user;
+}
+```
+
+✅ **Follow:**
+```javascript
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+function validateAndCreateUser(userData: UserData): User {
+  return validateUser(userData);
+}
+
+function validateFileSize(file: File): void {
+  if (file.size > MAX_FILE_SIZE) {
+    throw new ValidationError(`파일 크기는 ${MAX_FILE_SIZE}바이트를 초과할 수 없습니다.`);
+  }
+}
+```
+
+Remember: RAG system complexity demands exceptional code clarity and systematic architecture.
+
+
+
+
