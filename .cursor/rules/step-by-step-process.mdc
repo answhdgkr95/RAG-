@@ -1,7 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Step-by-Step Development Process
 
@@ -12,14 +10,15 @@ For EVERY development task, follow this systematic process.
 ## Phase 1: 🔍 Exploration & Analysis
 
 ### Required Actions:
+
 1. **File & Pattern Exploration**
    - Map relevant files and directories
    - Study [README.md](mdc:README.md) and [docs/DEVELOPMENT_GUIDE.md](mdc:docs/DEVELOPMENT_GUIDE.md)
    - Review existing patterns: naming, error handling, architecture
-   - Check [backend/tests/](mdc:backend/tests) and [frontend/__tests__/](mdc:frontend/__tests__) for test patterns
+   - Check backend/tests/ and frontend/__tests__/ for test patterns (directories to be created)
 
 2. **Technology-Specific Review**
-   - **Frontend**: Components in [frontend/components/](mdc:frontend/components), Zustand patterns, Tailwind usage
+   - **Frontend**: Components in [frontend/src/components/](mdc:frontend/src/components), Zustand patterns, Tailwind usage
    - **Backend**: API routers in [backend/api/](mdc:backend/api), service layers, database models
 
 3. **Dependency Analysis**
@@ -27,6 +26,7 @@ For EVERY development task, follow this systematic process.
    - CI/CD workflows: [.github/workflows/](mdc:.github/workflows)
 
 ### Key Questions:
+
 - How is similar functionality implemented?
 - What patterns does the codebase follow?
 - Are there reusable utilities?
@@ -35,6 +35,7 @@ For EVERY development task, follow this systematic process.
 ## Phase 2: 🎯 Requirements & Design
 
 ### Analysis & Planning:
+
 1. **Functional Requirements**
    - Exact functionality needed
    - Inputs, outputs, edge cases
@@ -53,6 +54,7 @@ For EVERY development task, follow this systematic process.
    - Define interfaces and testing approach per [tdd-workflow.mdc](mdc:.cursor/rules/tdd-workflow.mdc)
 
 ### Design Documentation:
+
 ```markdown
 ## Implementation Plan
 - **Component**: [Name and purpose]
@@ -66,6 +68,7 @@ For EVERY development task, follow this systematic process.
 ## Phase 3: 🛠️ Implementation
 
 ### TDD Implementation:
+
 1. **Start with Tests** ([tdd-workflow.mdc](mdc:.cursor/rules/tdd-workflow.mdc))
    - Write failing test for simplest case
    - Implement minimal code to pass
@@ -85,13 +88,16 @@ For EVERY development task, follow this systematic process.
 ### Quality Gates:
 
 #### Before Commit:
+
 ✅ **Code Quality**
+
 - [ ] Single responsibility maintained
 - [ ] No magic numbers/hardcoded values
 - [ ] Comprehensive error handling
 - [ ] Security validated
 
 ✅ **Testing & Environment**
+
 - [ ] Tests written first (TDD)
 - [ ] Pre-commit hooks pass ([.pre-commit-config.yaml](mdc:.pre-commit-config.yaml))
 - [ ] Code quality tools satisfied
@@ -100,6 +106,7 @@ For EVERY development task, follow this systematic process.
 ## Example: Document Similarity Search
 
 ### Phase 1: Exploration
+
 ```typescript
 // Check existing search patterns
 // Review: frontend/components/ for search UI
@@ -108,6 +115,7 @@ For EVERY development task, follow this systematic process.
 ```
 
 ### Phase 2: Analysis
+
 ```markdown
 ## Similarity Search Requirements
 - Accept text query, generate embeddings
@@ -118,6 +126,7 @@ For EVERY development task, follow this systematic process.
 ```
 
 ### Phase 3: Implementation
+
 ```typescript
 // TDD cycle implementation
 describe('SimilaritySearch', () => {
@@ -132,16 +141,19 @@ describe('SimilaritySearch', () => {
 ## RAG System Considerations
 
 ### Document Processing
+
 - **Chunking**: Optimal size for embeddings
 - **Preprocessing**: Clean and normalize content
 - **Vector Generation**: Efficient embedding creation
 
 ### AI Integration
+
 - **OpenAI API**: Rate limiting, cost optimization
 - **Prompt Engineering**: Effective query construction
 - **Response Processing**: Parse and validate AI responses
 
 ### Security & Performance
+
 - **File Validation**: Type and content checking
 - **Access Control**: User-based permissions
 - **Performance**: Query optimization, caching
@@ -171,12 +183,14 @@ git commit -m "refactor(search): optimize query performance"
 ## Anti-Patterns
 
 ❌ **Avoid:**
+
 - Jump to implementation without exploration
 - Copy-paste without understanding patterns
 - Skip testing phases
 - Ignore security considerations
 
 ✅ **Follow:**
+
 - Invest time in understanding before building
 - Reuse established patterns
 - Build incrementally with tests

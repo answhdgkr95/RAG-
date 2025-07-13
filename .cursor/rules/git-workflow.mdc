@@ -1,6 +1,4 @@
 ---
-description: 
-globs: 
 alwaysApply: true
 ---
 # Git Workflow & Commit Standards
@@ -9,7 +7,7 @@ alwaysApply: true
 
 **MANDATORY**: All commits MUST follow this exact format:
 
-```
+```text
 <type>(<scope>): <description>
 
 [optional body]
@@ -26,6 +24,7 @@ alwaysApply: true
 ## Commit Examples
 
 ### ✅ Good Commits
+
 ```bash
 # Feature development
 feat(docs): add document upload with file validation
@@ -46,6 +45,7 @@ docs(api): add OpenAPI specifications for document endpoints
 ```
 
 ### ❌ Bad Commits
+
 ```bash
 update code           # Too vague
 added login feature   # Missing type
@@ -56,16 +56,19 @@ feat: add login and fix search bug  # Multiple changes
 ## Commit Guidelines
 
 ### 1. Atomic Commits
+
 - One logical change per commit
 - Independently deployable
 - Follow TDD cycle: test → implement → refactor
 
 ### 2. Clear Descriptions  
+
 - Imperative mood ("add", not "added")
 - Be specific about changes
 - Reference tasks: "Closes T-XXX"
 
 ### 3. Breaking Changes
+
 ```bash
 feat(api)!: change user authentication response format
 
@@ -99,12 +102,14 @@ git push -u origin feature/T-123-new-feature
 Before EVERY commit, ensure compliance with [development-guidelines.mdc](mdc:.cursor/rules/development-guidelines.mdc):
 
 ✅ **Code Quality**
+
 - [ ] Follows established patterns (≤20 lines per function)
 - [ ] No magic numbers or hardcoded values
 - [ ] Comprehensive error handling
 - [ ] Security considerations addressed
 
 ✅ **Testing & Environment**
+
 - [ ] Tests written following TDD ([tdd-workflow.mdc](mdc:.cursor/rules/tdd-workflow.mdc))
 - [ ] All tests pass (unit + integration)
 - [ ] Pre-commit hooks pass ([.pre-commit-config.yaml](mdc:.pre-commit-config.yaml))
@@ -146,6 +151,7 @@ perf(search): optimize query execution time
 ## Git Commands & Templates
 
 ### Commit Template Setup
+
 ```bash
 git config commit.template ~/.gitmessage
 ```
@@ -164,6 +170,7 @@ type(scope): brief description (≤50 chars)
 ```
 
 ### Useful Commands
+
 ```bash
 # Interactive staging for atomic commits
 git add -p
@@ -178,11 +185,13 @@ git rebase -i HEAD~3
 ## CI/CD Integration
 
 Commit format integrates with automated workflows:
+
 - [.github/workflows/frontend-ci.yml](mdc:.github/workflows/frontend-ci.yml)
 - [.github/workflows/backend-ci.yml](mdc:.github/workflows/backend-ci.yml)
 - [.github/workflows/main-ci.yml](mdc:.github/workflows/main-ci.yml)
 
 Features:
+
 - Commit message validation via pre-commit hooks
 - Automatic changelog generation
 - Semantic version bumping based on types
@@ -190,6 +199,7 @@ Features:
 ## Quality Metrics
 
 Track these commit quality indicators:
+
 - **Size**: Prefer small, focused commits (<100 lines)
 - **Message Quality**: Clear, descriptive following conventions
 - **Atomicity**: One logical change per commit

@@ -1,7 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # TDD Workflow
 
@@ -10,14 +8,17 @@ alwaysApply: false
 **CRITICAL**: For ALL code changes, follow this TDD cycle.
 
 ### 🔴 RED: Write failing test FIRST
+
 - Start with simplest scenario, ONE test at a time
 - Ensure clear failure message for RIGHT reason
 
 ### 🟢 GREEN: Minimal code to pass
+
 - "Fake it till you make it" approach
 - YAGNI principle: implement only what's needed
 
 ### 🔄 REFACTOR: Improve while tests green
+
 - Remove duplication, improve naming
 - Apply [development-guidelines.mdc](mdc:.cursor/rules/development-guidelines.mdc)
 
@@ -49,6 +50,7 @@ describe('DocumentValidator', () => {
 ## Technology-Specific Testing
 
 ### Frontend (Jest + Testing Library)
+
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useDocumentStore } from '@/stores/documentStore';
@@ -69,6 +71,7 @@ describe('DocumentUpload', () => {
 ```
 
 ### Backend (pytest + FastAPI)
+
 ```python
 import pytest
 from fastapi.testclient import TestClient
@@ -97,6 +100,7 @@ def test_upload_invalid_file_type():
 ## RAG System Testing
 
 ### Vector Service Testing
+
 ```python
 from unittest.mock import Mock, patch
 from app.services.vector_service import VectorService
@@ -115,6 +119,7 @@ def test_store_embeddings():
 ```
 
 ### AI Service Testing
+
 ```python
 def test_generate_answer_success():
     mock_response = {"choices": [{"message": {"content": "AI response"}}]}
@@ -129,7 +134,7 @@ def test_generate_answer_success():
 
 ## Environment Integration
 
-- Test structure: [backend/tests/](mdc:backend/tests), [frontend/__tests__/](mdc:frontend/__tests__)
+- Test structure: backend/tests/ (to be created), frontend/__tests__/ (to be created)
 - CI/CD workflows: [.github/workflows/](mdc:.github/workflows)
 - Pre-commit testing in [.pre-commit-config.yaml](mdc:.pre-commit-config.yaml)
 
@@ -155,11 +160,13 @@ git commit -m "refactor: enhance validation architecture"
 ## Anti-Patterns
 
 ❌ **Avoid:**
+
 - Writing production code before tests
 - Testing implementation details
 - Complex test setup (use factories/fixtures)
 
 ✅ **Follow:**
+
 - Test behavior, not implementation
 - One assertion per test concept
 - Clear test names describing scenarios

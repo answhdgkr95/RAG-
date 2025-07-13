@@ -35,13 +35,15 @@ Key architectural decisions include strict domain-based modularization, API-driv
 #### File Organization and Directory Structure
 
 - MUST follow domain-first structure:
-  ```
+
+  ```text
   frontend/
     components/
     pages/
     hooks/
     styles/
   ```
+
 - Each component MUST reside in its own file.
 - Shared hooks and utility functions go under `hooks/` and `utils/`.
 
@@ -59,13 +61,13 @@ Key architectural decisions include strict domain-based modularization, API-driv
 
 ```javascript
 // MUST: Proper error handling in async data fetching
-import { useState } from "react";
-import * as Sentry from "@sentry/browser";
+import { useState } from 'react';
+import * as Sentry from '@sentry/browser';
 
 export async function fetchData(url) {
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error("Failed to fetch");
+    if (!res.ok) throw new Error('Failed to fetch');
     return await res.json();
   } catch (error) {
     Sentry.captureException(error);
@@ -78,10 +80,11 @@ export async function fetchData(url) {
 
 ### 3.2. Backend (Python 3.11 + FastAPI)
 
-#### File Organization and Directory Structure
+#### Backend File Organization and Directory Structure
 
 - MUST follow:
-  ```
+
+```text
   backend/app/
     api/
     domain/
@@ -91,16 +94,17 @@ export async function fetchData(url) {
     core/
     services/
     models/
-  ```
+```
+
 - Each domain submodule MUST encapsulate its logic and data models.
 
-#### Import/Dependency Management
+#### Backend Import/Dependency Management
 
 - MUST use absolute imports within the project.
 - MUST declare all dependencies in `pyproject.toml` or `requirements.txt`.
 - MUST NOT import unused modules.
 
-#### Error Handling Patterns
+#### Backend Error Handling Patterns
 
 - MUST use FastAPI exception handlers for HTTP errors.
 - MUST log all errors with structured logs (JSON, including trace IDs).
@@ -128,19 +132,23 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 ### 4.1. MUST Follow
 
 - **Consistent Naming:** Use `camelCase` for JS/TS variables/functions, `PascalCase` for React components, `snake_case` for Python.
-  - *Rationale:* Increases readability and aligns with language conventions.
+
+  - _Rationale:_ Increases readability and aligns with language conventions.
 
 - **Type Safety:** Use TypeScript for all React code; use Pydantic models for FastAPI.
-  - *Rationale:* Prevents runtime errors and improves maintainability.
+
+  - _Rationale:_ Prevents runtime errors and improves maintainability.
 
 - **Modularization:** Each module/file must encapsulate a single domain or feature.
-  - *Rationale:* Simplifies code navigation and testing.
+
+  - _Rationale:_ Simplifies code navigation and testing.
 
 - **Explicit API Schemas:** All API endpoints must define request/response schemas.
-  - *Rationale:* Enables auto-documentation and client generation.
+
+  - _Rationale:_ Enables auto-documentation and client generation.
 
 - **Security Checks:** All endpoints must enforce JWT authentication and role-based authorization.
-  - *Rationale:* Prevents unauthorized access and data leaks.
+  - _Rationale:_ Prevents unauthorized access and data leaks.
 
 ```typescript
 // MUST: Type-safe React component
@@ -261,7 +269,7 @@ export function DocumentList() {
   if (error) return <div>Error loading documents</div>;
   return (
     <ul>
-      {data?.map(doc => (
+      {data?.map((doc) => (
         <li key={doc.id}>{doc.title}</li>
       ))}
     </ul>

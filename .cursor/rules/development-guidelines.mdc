@@ -1,7 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Development Guidelines
 
@@ -10,12 +8,14 @@ alwaysApply: false
 Expert RAG system development with rigorous adherence to:
 
 ### 1. Single Responsibility & Explicit Design
+
 - One responsibility per function/class/module
 - Explicit dependencies, no hidden state
 - Max 20 lines per function, 3 parameters max
 - Early returns over nested conditions
 
 ### 2. Security by Default
+
 - Authenticate before sensitive operations
 - Validate ALL inputs at boundaries
 - Environment variables for secrets
@@ -24,6 +24,7 @@ Expert RAG system development with rigorous adherence to:
 ## Technology Standards
 
 ### Frontend (React/Next.js)
+
 ```typescript
 // ✅ Component pattern
 interface DocumentUploadProps {
@@ -49,6 +50,7 @@ interface DocumentState {
 ```
 
 ### Backend (FastAPI/Python)
+
 ```python
 # ✅ API router pattern
 @router.post("/", response_model=DocumentResponse)
@@ -87,7 +89,8 @@ class DocumentService:
 - **Booleans**: is/has/can prefix (isValid, hasPermission)
 
 **File Organization** (Reference [docs/DEVELOPMENT_GUIDE.md](mdc:docs/DEVELOPMENT_GUIDE.md)):
-```
+
+```text
 frontend/components/common/     # Shared components
 backend/api/v1/                 # API endpoints
 backend/services/               # Business logic
@@ -96,6 +99,7 @@ backend/services/               # Business logic
 ## Error Handling
 
 ### Frontend
+
 ```typescript
 try {
   const result = await apiCall();
@@ -111,6 +115,7 @@ try {
 ```
 
 ### Backend
+
 ```python
 async def process_document(file: UploadFile) -> ProcessedDocument:
     try:
@@ -127,6 +132,7 @@ async def process_document(file: UploadFile) -> ProcessedDocument:
 ## Quality Gates
 
 Before ANY code submission:
+
 1. ✅ Single responsibility maintained
 2. ✅ No magic numbers/hardcoded values  
 3. ✅ Comprehensive error handling
@@ -137,18 +143,21 @@ Before ANY code submission:
 ## RAG System Specifics
 
 ### Document Processing
+
 - Efficient chunking for vector storage
 - Streaming for large files
 - Thorough file validation
 - API rate limiting
 
-### Vector Operations  
+### Vector Operations
+
 - Appropriate embedding strategies
 - Graceful error handling
 - Caching for expensive operations
 - Usage monitoring
 
 ### Security
+
 - File upload sanitization
 - Access control implementation
 - AI content validation
@@ -163,6 +172,7 @@ Before ANY code submission:
 ## Anti-Patterns
 
 ❌ **Avoid:**
+
 ```javascript
 // Multiple responsibilities + magic numbers + vague errors
 function processUserData(userData) {
@@ -173,6 +183,7 @@ function processUserData(userData) {
 ```
 
 ✅ **Follow:**
+
 ```javascript
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 

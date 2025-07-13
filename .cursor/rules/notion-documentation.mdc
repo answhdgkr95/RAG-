@@ -1,42 +1,51 @@
 ---
-description: 
-globs: 
 alwaysApply: false
 ---
 # Notion Documentation Rule
 
 ## ACTIVATION TRIGGERS
+
 Execute when user requests:
+
 - "노션에 정리해줘" / "document to notion" 
 - "작업 내용을 문서화해줘" / "document the work"
 - Similar documentation requests
 
 ## DOCUMENT STRUCTURE
+
 Follow this exact sequence:
 
 ### 1. 🎯 CURSOR COMMAND
+
 **What command was executed:**
+
 - Original user request/prompt
 - Specific instructions given
 - Context or constraints mentioned
 
 ### 2. 🔧 WORK PERFORMED  
+
 **What actions were taken:**
+
 - Files modified (with paths)
 - Code changes made
 - Technical implementation
 - Issues resolved
 
 ### 3. ➡️ NEXT COMMAND
+
 **Subsequent instructions given:**
+
 - Follow-up requests
 - Additional modifications
 - Testing or validation steps
 
 ## TITLE FORMAT
+
 `{Module}_{Description} [{ScreenID}]`
 
 ## BLOCK USAGE STRATEGY
+
 - **Page Title**: `heading_1` (Implicitly used for the page title)
 - **Main Sections**: Use `heading_2` for `🎯 CURSOR COMMAND`, `🔧 WORK PERFORMED`, `➡️ NEXT COMMAND`.
 - **Sub-Sections**: Use `heading_3` for detailed points like "File Modified" or "Code Changes".
@@ -45,17 +54,20 @@ Follow this exact sequence:
 - **Spacing**: Use empty `paragraph` blocks for visual separation.
 
 ## CONTENT GUIDELINES
+
 - **Language**: English for rules, Korean for content
 - **Structure**: Use emojis + specified block types for clarity.
 - **Code**: Include before/after snippets in code blocks.
 - **Results**: Document outcomes clearly.
 
 ## NOTION API SEQUENCE
+
 1. Create page under specified parent.
 2. Add title with format.
 3. Insert structured content using the block strategy.
 
 ## EFFICIENCY RULES
+
 - Keep content concise but complete.
 - Focus on actionable information.
 - Minimize redundant explanations.

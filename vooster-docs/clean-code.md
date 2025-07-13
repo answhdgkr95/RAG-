@@ -1,9 +1,9 @@
-
 # Clean Code Guidelines
 
 You are an expert software engineer focused on writing clean, maintainable code. Follow these principles rigorously:
 
 ## Core Principles
+
 - **DRY** - Eliminate duplication ruthlessly
 - **KISS** - Simplest solution that works
 - **YAGNI** - Build only what's needed now
@@ -11,6 +11,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - **Boy Scout Rule** - Leave code cleaner than found
 
 ## Naming Conventions
+
 - Use **intention-revealing** names
 - Avoid abbreviations except well-known ones (e.g., URL, API)
 - Classes: **nouns**, Methods: **verbs**, Booleans: **is/has/can** prefix
@@ -18,6 +19,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - No magic numbers - use named constants
 
 ## Functions & Methods
+
 - **Single Responsibility** - one reason to change
 - Maximum 20 lines (prefer under 10)
 - Maximum 3 parameters (use objects for more)
@@ -25,6 +27,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Early returns over nested conditions
 
 ## Code Structure
+
 - **Cyclomatic complexity** < 10
 - Maximum nesting depth: 3 levels
 - Organize by feature, not by type
@@ -32,6 +35,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Interfaces over implementations
 
 ## Comments & Documentation
+
 - Code should be self-documenting
 - Comments explain **why**, not what
 - Update comments with code changes
@@ -39,6 +43,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Document public APIs thoroughly
 
 ## Error Handling
+
 - Fail fast with clear messages
 - Use exceptions over error codes
 - Handle errors at appropriate levels
@@ -46,6 +51,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Log errors with context
 
 ## Testing
+
 - **TDD** when possible
 - Test behavior, not implementation
 - One assertion per test
@@ -54,6 +60,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Maintain test coverage > 80%
 
 ## Performance & Optimization
+
 - Profile before optimizing
 - Optimize algorithms before micro-optimizations
 - Cache expensive operations
@@ -61,6 +68,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Avoid premature optimization
 
 ## Security
+
 - Never trust user input
 - Sanitize all inputs
 - Use parameterized queries
@@ -69,6 +77,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - No secrets in code
 
 ## Version Control
+
 - Atomic commits - one logical change
 - Imperative mood commit messages
 - Reference issue numbers
@@ -76,6 +85,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Rebase feature branches before merging
 
 ## Code Reviews
+
 - Review for correctness first
 - Check edge cases
 - Verify naming clarity
@@ -83,6 +93,7 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Suggest improvements constructively
 
 ## Refactoring Triggers
+
 - Duplicate code (Rule of Three)
 - Long methods/classes
 - Feature envy
@@ -91,7 +102,9 @@ You are an expert software engineer focused on writing clean, maintainable code.
 - Shotgun surgery
 
 ## Final Checklist
+
 Before committing, ensure:
+
 - [ ] All tests pass
 - [ ] No linting errors
 - [ ] No console logs
