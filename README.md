@@ -181,5 +181,4 @@ npm test
 - OpenAI API
 - FastAPI
 - Next.js
-- Milvus
 - PostgreSQL
