@@ -1,13 +1,14 @@
 ---
 alwaysApply: false
 ---
+
 # Notion Documentation Rule
 
 ## ACTIVATION TRIGGERS
 
 Execute when user requests:
 
-- "노션에 정리해줘" / "document to notion" 
+- "노션에 정리해줘" / "document to notion"
 - "작업 내용을 문서화해줘" / "document the work"
 - Similar documentation requests
 
@@ -23,7 +24,7 @@ Follow this exact sequence:
 - Specific instructions given
 - Context or constraints mentioned
 
-### 2. 🔧 WORK PERFORMED  
+### 2. 🔧 WORK PERFORMED
 
 **What actions were taken:**
 
@@ -74,6 +75,3 @@ Follow this exact sequence:
 - Use structured formatting for clarity.
 
 **CRITICAL**: Document chronological command-work-command flow for traceability.
-
-
-
