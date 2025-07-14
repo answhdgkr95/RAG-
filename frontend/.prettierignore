@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env*
+
+# Logs
+*.log
+
+# Cache
+.cache/
+.turbo/
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml 
+
+*.py
+../backend/** 
