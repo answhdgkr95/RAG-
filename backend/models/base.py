@@ -9,8 +9,9 @@ Base = declarative_base()  # noqa
 
 class BaseModel(Base):  # type: ignore
     """기본 모델 클래스"""
+
     __abstract__ = True
-  
+
     id = Column(Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=func.now(), nullable=False)
     updated_at = Column(
@@ -19,10 +20,9 @@ class BaseModel(Base):  # type: ignore
         onupdate=func.now(),
         nullable=False,
     )
-   
+
     def to_dict(self):
         """모델을 딕셔너리로 변환"""
         return {
-            column.name: getattr(self, column.name)
-            for column in self.__table__.columns
-        } 
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }

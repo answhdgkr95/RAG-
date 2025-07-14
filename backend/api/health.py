@@ -13,7 +13,7 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "RAG Document Search API"
+        "service": "RAG Document Search API",
     }
 
 
@@ -24,7 +24,7 @@ async def detailed_health_check():
         # 시스템 리소스 정보
         cpu_usage = psutil.cpu_percent(interval=1)
         memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
+        disk = psutil.disk_usage("/")
         return {
             "status": "healthy",
             "timestamp": datetime.utcnow().isoformat(),
@@ -34,16 +34,13 @@ async def detailed_health_check():
                 "memory_usage_percent": memory.percent,
                 "memory_available_mb": memory.available // (1024 * 1024),
                 "disk_usage_percent": disk.percent,
-                "disk_free_gb": disk.free // (1024 * 1024 * 1024)
+                "disk_free_gb": disk.free // (1024 * 1024 * 1024),
             },
-            "environment": {
-                "python_version": os.sys.version,
-                "platform": os.name
-            }
+            "environment": {"python_version": os.sys.version, "platform": os.name},
         }
     except Exception as e:
         return {
             "status": "unhealthy",
             "timestamp": datetime.utcnow().isoformat(),
-            "error": str(e)
+            "error": str(e),
         }
