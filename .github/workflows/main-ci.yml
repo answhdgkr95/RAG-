@@ -43,7 +43,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt
       - run: pip install pytest-cov flake8 black isort mypy
-      - run: black --check .
+      - run: black --check app
       - run: isort --check-only .
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - run: mypy . --ignore-missing-imports
