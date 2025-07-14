@@ -1,9 +1,0 @@
-# Infrastructure Directory
-
-이 디렉터리는 인프라 관련 파일들을 위한 공간입니다.
-
-## 구조 예정
-- Helm charts for Kubernetes deployment
-- Terraform for infrastructure as code
-- GitHub Actions workflows
-- Docker configurations 
