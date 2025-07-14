@@ -73,6 +73,7 @@ RAG-/
 ### ✅ 완료된 작업 내용
 
 #### 1. Git 저장소 및 기본 구조 [T-001-001] ✅
+
 - **완료일**: 2025-01-11
 - **결과**: 
   - Git 저장소 초기화 및 GitHub 연동
@@ -81,6 +82,7 @@ RAG-/
   - 기본 브랜치 구조 (main, develop) 설정
 
 #### 2. 디렉터리 구조 설계 [T-001-002] ✅
+
 - **완료일**: 2025-01-11
 - **결과**:
   - `frontend/`, `backend/`, `infra/`, `docs/` 디렉터리 생성
@@ -88,6 +90,7 @@ RAG-/
   - 각 디렉터리별 placeholder 파일 배치
 
 #### 3. 템플릿 파일 배치 [T-001-003] ✅
+
 - **완료일**: 2025-01-11
 - **Frontend 템플릿**:
   - Next.js 14 + React 18 + TypeScript 설정
@@ -103,6 +106,7 @@ RAG-/
   - Kubernetes 배포 구성
 
 #### 4. CI/CD 워크플로 구현 [T-001-004] ✅
+
 - **완료일**: 2025-01-11
 - **GitHub Actions 구성**:
   - `frontend-ci.yml`: Node.js 18/20 매트릭스, 빌드/테스트/린트
@@ -113,6 +117,7 @@ RAG-/
   - PostgreSQL, Redis 서비스 헬스체크
 
 #### 5. 개발 가이드 문서화 [T-001-005] ✅
+
 - **완료일**: 2025-01-11
 - **코드 컨벤션**: 
   - Frontend: TypeScript, React, Tailwind CSS 스타일 가이드
@@ -128,6 +133,7 @@ RAG-/
   - 테스트 작성 가이드
 
 #### 6. MCP 문서화 완료 [T-001-006] ✅
+
 - **완료일**: 2025-01-11
 - **GitHub 문서**: README.md 업데이트 (현재 문서)
 - **Vooster 프로젝트**: 태스크 기반 관리 연동
@@ -136,6 +142,7 @@ RAG-/
 ## 🛠️ 기술 스택
 
 ### Frontend
+
 - **Framework**: React 18 + Next.js 14
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
@@ -144,6 +151,7 @@ RAG-/
 - **Testing**: Jest + Testing Library
 
 ### Backend
+
 - **Framework**: FastAPI
 - **Language**: Python 3.11+
 - **Database**: PostgreSQL + SQLAlchemy
@@ -153,12 +161,14 @@ RAG-/
 - **Testing**: pytest + coverage
 
 ### AI/ML
+
 - **LLM**: OpenAI GPT-4o
 - **Embedding**: OpenAI text-embedding-3
 - **Framework**: Langchain
 - **Vector Search**: Semantic similarity search
 
 ### DevOps & Infrastructure
+
 - **Containerization**: Docker + Docker Compose
 - **Orchestration**: Kubernetes + Helm
 - **CI/CD**: GitHub Actions
