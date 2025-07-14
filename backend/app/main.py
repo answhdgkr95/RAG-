@@ -13,7 +13,7 @@ app = FastAPI(
     description="AI 기반 문서 검색 및 질의응답 시스템의 백엔드 API",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # CORS 설정
@@ -54,15 +54,11 @@ async def health_check():
 async def global_exception_handler(request, exc):
     """전역 예외 처리"""
     return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error occurred"}
+        status_code=500, content={"detail": "Internal server error occurred"}
     )
+
 
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app",
-        host="0.0.0.0",  # nosec
-        port=8000,
-        reload=True,
-        log_level="info"
-    ) 
+        "main:app", host="0.0.0.0", port=8000, reload=True, log_level="info"  # nosec
+    )
