@@ -1,6 +1,7 @@
-from pydantic_settings import BaseSettings
 from typing import Optional
-import os
+
+from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     """애플리케이션 설정"""
@@ -48,6 +49,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+
 
 # 설정 인스턴스 생성
 settings = Settings() 

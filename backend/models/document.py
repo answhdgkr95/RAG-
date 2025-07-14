@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, ForeignKey
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
-from .base import BaseModel
+
+from .base import BaseModel  # type: ignore
+
 
 class Document(BaseModel):
     """문서 모델"""
@@ -14,10 +16,15 @@ class Document(BaseModel):
     content = Column(Text, nullable=True)
     is_processed = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    
+
     # 관계 설정
     user = relationship("User", back_populates="documents")
-    chunks = relationship("DocumentChunk", back_populates="document", cascade="all, delete-orphan")
+    chunks = relationship(
+        "DocumentChunk",
+        back_populates="document",
+        cascade="all, delete-orphan"
+    )
+
 
 class DocumentChunk(BaseModel):
     """문서 청크 모델"""
@@ -28,6 +35,6 @@ class DocumentChunk(BaseModel):
     content = Column(Text, nullable=False)
     embedding_vector = Column(Text, nullable=True)  # JSON 형태로 저장
     page_number = Column(Integer, nullable=True)
-    
+
     # 관계 설정
     document = relationship("Document", back_populates="chunks") 

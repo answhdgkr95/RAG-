@@ -1,4 +1,6 @@
 ---
+description: 
+globs: 
 alwaysApply: true
 ---
 # Git Workflow & Commit Standards
@@ -207,6 +209,7 @@ Track these commit quality indicators:
 - **Test Coverage**: Commits maintain or improve coverage
 
 Remember: Good commit history documents how the RAG system evolved. Each commit should tell a clear story of logical development progression.
+
 
 
 

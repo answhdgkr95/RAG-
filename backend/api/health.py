@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from datetime import datetime
-import psutil
 import os
+from datetime import datetime
+
+import psutil  # type: ignore  # Library stubs not installed for "psutil"
+from fastapi import APIRouter
 
 router = APIRouter()
+
 
 @router.get("/")
 async def health_check():
@@ -15,6 +16,7 @@ async def health_check():
         "service": "RAG Document Search API"
     }
 
+
 @router.get("/detailed")
 async def detailed_health_check():
     """상세 헬스체크"""
@@ -23,7 +25,6 @@ async def detailed_health_check():
         cpu_usage = psutil.cpu_percent(interval=1)
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
-        
         return {
             "status": "healthy",
             "timestamp": datetime.utcnow().isoformat(),

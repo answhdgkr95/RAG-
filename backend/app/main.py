@@ -30,18 +30,25 @@ app.add_middleware(
 # app.include_router(health.router, prefix="/api/health", tags=["health"])
 # app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 # app.include_router(users.router, prefix="/api/users", tags=["users"])
-# app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
+# app.include_router(
+#     documents.router,
+#     prefix="/api/documents",
+#     tags=["documents"]
+# )
 # app.include_router(search.router, prefix="/api/search", tags=["search"])
+
 
 @app.get("/")
 async def root():
     """루트 엔드포인트"""
     return {"message": "RAG 기반 문서 검색 시스템 API", "version": "1.0.0"}
 
+
 @app.get("/api/health")
 async def health_check():
     """헬스 체크 엔드포인트"""
     return {"status": "healthy", "message": "API 서버가 정상적으로 작동 중입니다."}
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):

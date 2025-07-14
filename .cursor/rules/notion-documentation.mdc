@@ -1,4 +1,6 @@
 ---
+description: 
+globs: 
 alwaysApply: false
 ---
 
@@ -45,33 +47,72 @@ Follow this exact sequence:
 
 `{Module}_{Description} [{ScreenID}]`
 
+
 ## BLOCK USAGE STRATEGY
 
 - **Page Title**: `heading_1` (Implicitly used for the page title)
-- **Main Sections**: Use `heading_2` for `🎯 CURSOR COMMAND`, `🔧 WORK PERFORMED`, `➡️ NEXT COMMAND`.
-- **Sub-Sections**: Use `heading_3` for detailed points like "File Modified" or "Code Changes".
+- **Main Sections**: Use `heading_2` for `📋 개요`, `🔄 작업순서`, `📝 작업내역요약`, `✅ 결과`.
+- **Sub-Sections**: Use `heading_3` for detailed categories like "파일 생성/수정" or "주요 기능 구현".
 - **Lists**: Use `bulleted_list_item` for itemized details under each section.
-- **Code**: Use `code` blocks for before/after snippets.
-- **Spacing**: Use empty `paragraph` blocks for visual separation.
+- **Code**: Use `code` blocks for configuration snippets, file contents, or commands.
+- **Spacing**: Use empty `paragraph` blocks for visual separation between major sections.
+
+## FORMATTING GUIDELINES
+
+### 📝 마크다운 문법 활용
+
+- **굵은 글씨**: `**중요 내용**` 형태로 핵심 포인트 강조
+- **기울임 글씨**: `*보조 설명*` 형태로 부가 정보 표시
+- **인라인 코드**: `백틱`으로 파일명, 명령어, 변수명 표시
+- **체크박스**: `- [ ]` 또는 `- [x]` 형태로 작업 상태 표시
+- **구분선**: `---` 사용하여 섹션 구분
+- **인용문**: `>` 사용하여 중요 메모나 주의사항 표시
+
+### 🎨 제목 크기 계층 구조
+
+- **Heading 1** (`heading_1`): 페이지 제목 (자동 적용)
+- **Heading 2** (`heading_2`): 주요 섹션 (📋 개요, 🔄 작업순서, 📝 작업내역요약, ✅ 결과)
+- **Heading 3** (`heading_3`): 세부 카테고리 (파일 생성/수정, 주요 기능 구현 등)
+- **일반 텍스트**: 상세 설명 및 내용
+
+### 🎯 시각적 요소 활용
+
+- **이모지 사용**: 각 섹션과 항목에 적절한 이모지로 가독성 향상
+- **테이블 형식**: 복잡한 데이터는 표 형태로 정리
+- **코드 블록**: 설정 파일, 명령어, 스크립트는 코드 블록으로 구분
+- **토글 블록**: 긴 내용은 접을 수 있는 토글로 구성
 
 ## CONTENT GUIDELINES
 
-- **Language**: English for rules, Korean for content
-- **Structure**: Use emojis + specified block types for clarity.
-- **Code**: Include before/after snippets in code blocks.
-- **Results**: Document outcomes clearly.
+- **Language**: Korean for all content (technical terms in English when necessary)
+- **Structure**: Use emojis + specified block types for clarity and visual appeal
+- **Detail Level**: Focus on actionable information and concrete results
+- **Code Examples**: Include relevant configuration or implementation snippets
+- **Visual Flow**: Maintain logical progression from overview to results
+- **Markdown Enhancement**: Actively use markdown syntax to improve readability and professional appearance
 
 ## NOTION API SEQUENCE
 
-1. Create page under specified parent.
-2. Add title with format.
-3. Insert structured content using the block strategy.
+1. Create page under specified parent with title format
+2. Add main sections using heading_2 blocks
+3. Insert structured content following the 4-section format
+4. Use appropriate block types for different content types
+5. Apply markdown formatting within text blocks for enhanced presentation
 
 ## EFFICIENCY RULES
 
-- Keep content concise but complete.
-- Focus on actionable information.
-- Minimize redundant explanations.
-- Use structured formatting for clarity.
+- **Comprehensive Coverage**: Include all significant work performed
+- **Clear Organization**: Maintain consistent structure across all documentation
+- **Actionable Information**: Focus on what was done, how it was done, and what was achieved
+- **Future Reference**: Structure content for easy retrieval and understanding
+- **Visual Appeal**: Use formatting strategically to create professional, easy-to-read documentation
 
-**CRITICAL**: Document chronological command-work-command flow for traceability.
+## SPECIAL CONSIDERATIONS
+
+- **Development Focus**: Emphasize technical implementation over process discussion
+- **Result-Oriented**: Highlight concrete deliverables and achievements
+- **Reproducible**: Include enough detail for others to understand and continue the work
+- **Professional**: Maintain documentation standards suitable for technical teams
+- **Formatting Consistency**: Apply consistent markdown and heading styles throughout the document
+
+**CRITICAL**: Document development work systematically from conception to completion for maximum value and traceability, while leveraging Notion's formatting capabilities for optimal presentation.
