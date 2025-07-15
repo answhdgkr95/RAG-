@@ -2,5 +2,69 @@
   "uid": "4KTI",
   "name": "RAG 기반 문서 검색 시스템",
   "description": "RAG 기반 문서 검색 시스템",
-  "connectedAt": "2025-07-11T01:26:22.995Z"
+  "connectedAt": "2025-07-11T01:26:22.995Z",
+  "lastUpdated": "2025-01-11T00:00:00.000Z",
+  "currentTask": {
+    "id": "T-004",
+    "name": "RAG 기반 질의응답 시스템",
+    "status": "in-progress",
+    "progress": 25,
+    "subtasks": [
+      {
+        "id": "T-004-001",
+        "name": "검색 API 구현",
+        "status": "completed",
+        "completedAt": "2025-01-11T00:00:00.000Z",
+        "description": "백엔드 검색 엔드포인트 및 프론트엔드 API 연동 완료"
+      },
+      {
+        "id": "T-004-002",
+        "name": "문서 업로드 API 구현",
+        "status": "pending",
+        "description": "파일 업로드 엔드포인트 및 검증 로직 구현"
+      },
+      {
+        "id": "T-004-003",
+        "name": "실제 RAG 로직 구현",
+        "status": "pending",
+        "description": "OpenAI API 연동 및 임베딩 생성"
+      },
+      {
+        "id": "T-004-004",
+        "name": "벡터 DB 연동",
+        "status": "pending",
+        "description": "Milvus/Pinecone 벡터 데이터베이스 연동"
+      }
+    ]
+  },
+  "completedTasks": [
+    {
+      "id": "T-001",
+      "name": "프로젝트 저장소 및 기본 구조 세팅",
+      "completedAt": "2025-01-11T00:00:00.000Z"
+    },
+    {
+      "id": "T-002",
+      "name": "사용자 인증 시스템 구현",
+      "completedAt": "2025-01-11T00:00:00.000Z"
+    },
+    {
+      "id": "T-003",
+      "name": "문서 업로드 및 처리 기능",
+      "completedAt": "2025-01-11T00:00:00.000Z"
+    }
+  ],
+  "nextTask": {
+    "id": "T-004-002",
+    "name": "문서 업로드 API 구현",
+    "priority": "high",
+    "estimatedHours": 4
+  },
+  "projectStats": {
+    "totalTasks": 6,
+    "completedTasks": 3,
+    "inProgressTasks": 1,
+    "pendingTasks": 2,
+    "overallProgress": 50
+  }
 }
