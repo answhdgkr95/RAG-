@@ -34,7 +34,7 @@ repos:
     hooks:
       - id: flake8
         files: ^backend/
-        args: [--max-line-length=88, --extend-ignore=E203,W503]
+        args: [--max-line-length=120, --extend-ignore=E203,W503]
 
   # Python mypy 타입 체커
   - repo: https://github.com/pre-commit/mirrors-mypy
