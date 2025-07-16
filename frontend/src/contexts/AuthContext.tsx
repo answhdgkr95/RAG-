@@ -1,6 +1,18 @@
-import React, { ReactNode, createContext, useContext, useEffect, useReducer } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
 import apiService from '../services/api';
-import { AuthContextType, AuthState, LoginCredentials, RegisterData, User } from '../types/auth';
+import {
+  AuthContextType,
+  AuthState,
+  LoginCredentials,
+  RegisterData,
+  User,
+} from '../types/auth';
 
 // Auth reducer
 type AuthAction =
@@ -107,12 +119,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initializeAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
     try {
       dispatch({ type: 'AUTH_START' });
-      
+
       const response = await apiService.login(credentials);
       const { user, access_token } = response;
 
@@ -120,7 +133,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       apiService.setToken(access_token);
       localStorage.setItem('user_data', JSON.stringify(user));
 
-      dispatch({ type: 'AUTH_SUCCESS', payload: { user, token: access_token } });
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user, token: access_token },
+      });
     } catch (error: any) {
       const message = error.response?.data?.detail || 'Login failed';
       dispatch({ type: 'AUTH_FAILURE', payload: message });
@@ -131,7 +147,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (data: RegisterData): Promise<void> => {
     try {
       dispatch({ type: 'AUTH_START' });
-      
+
       const response = await apiService.register(data);
       const { user, access_token } = response;
 
@@ -139,7 +155,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       apiService.setToken(access_token);
       localStorage.setItem('user_data', JSON.stringify(user));
 
-      dispatch({ type: 'AUTH_SUCCESS', payload: { user, token: access_token } });
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user, token: access_token },
+      });
     } catch (error: any) {
       const message = error.response?.data?.detail || 'Registration failed';
       dispatch({ type: 'AUTH_FAILURE', payload: message });
@@ -168,7 +187,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       apiService.setToken(access_token);
       localStorage.setItem('user_data', JSON.stringify(user));
 
-      dispatch({ type: 'AUTH_SUCCESS', payload: { user, token: access_token } });
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user, token: access_token },
+      });
     } catch (error) {
       logout();
       throw error;
@@ -200,4 +222,4 @@ export const useAuth = (): AuthContextType => {
   return context;
 };
 
-export default AuthContext; 
+export default AuthContext;

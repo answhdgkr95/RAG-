@@ -1,6 +1,27 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { AuthResponse, LoginCredentials, RegisterData } from '../types/auth';
 
+// 검색 관련 타입 정의
+export interface SearchRequest {
+  query: string;
+  max_results?: number;
+}
+
+export interface SearchResult {
+  content: string;
+  document_title: string;
+  page_number?: number;
+  confidence_score: number;
+  source_chunk: string;
+}
+
+export interface SearchResponse {
+  answer: string;
+  results: SearchResult[];
+  total_results: number;
+  processing_time: number;
+}
+
 class ApiService {
   private api: AxiosInstance;
   private token: string | null = null;
@@ -60,12 +81,18 @@ class ApiService {
 
   // Auth endpoints
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await this.api.post<AuthResponse>('/api/auth/login', credentials);
+    const response = await this.api.post<AuthResponse>(
+      '/api/auth/login',
+      credentials
+    );
     return response.data;
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await this.api.post<AuthResponse>('/api/auth/register', data);
+    const response = await this.api.post<AuthResponse>(
+      '/api/auth/register',
+      data
+    );
     return response.data;
   }
 
@@ -80,6 +107,15 @@ class ApiService {
 
   async getProfile(): Promise<any> {
     const response = await this.api.get('/api/auth/profile');
+    return response.data;
+  }
+
+  // Search endpoints
+  async searchDocuments(request: SearchRequest): Promise<SearchResponse> {
+    const response = await this.api.post<SearchResponse>(
+      '/api/search/',
+      request
+    );
     return response.data;
   }
 
@@ -100,12 +136,20 @@ class ApiService {
     return response.data;
   }
 
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     const response = await this.api.post<T>(url, data, config);
     return response.data;
   }
 
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async put<T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     const response = await this.api.put<T>(url, data, config);
     return response.data;
   }
@@ -117,4 +161,4 @@ class ApiService {
 }
 
 export const apiService = new ApiService();
-export default apiService; 
+export default apiService;

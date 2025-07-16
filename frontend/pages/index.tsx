@@ -1,43 +1,56 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useAuth } from '../src/contexts/AuthContext'
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../src/contexts/AuthContext';
+import { apiService, SearchResponse } from '../src/services/api';
 
 export default function Home() {
-  const { user, isAuthenticated, logout, isLoading } = useAuth()
-  const [query, setQuery] = useState('')
-  const [isSearchLoading, setIsSearchLoading] = useState(false)
-  const router = useRouter()
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
+  const [query, setQuery] = useState('');
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResponse | null>(
+    null
+  );
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/login')
+      router.push('/login');
     }
-  }, [isAuthenticated, isLoading, router])
+  }, [isAuthenticated, isLoading, router]);
 
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSearchLoading(true)
-    
+    e.preventDefault();
+    setIsSearchLoading(true);
+    setSearchError(null);
+    setSearchResults(null);
+
     try {
-      // TODO: API 호출 구현
-      console.log('Searching for:', query)
-      await new Promise(resolve => setTimeout(resolve, 1000)) // 임시 지연
-    } catch (error) {
-      console.error('Search error:', error)
+      const results = await apiService.searchDocuments({
+        query: query.trim(),
+        max_results: 5,
+      });
+      setSearchResults(results);
+    } catch (error: any) {
+      console.error('Search error:', error);
+      setSearchError(
+        error.response?.data?.detail ||
+          '검색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+      );
     } finally {
-      setIsSearchLoading(false)
+      setIsSearchLoading(false);
     }
-  }
+  };
 
   const handleLogout = async () => {
     try {
-      await logout()
-      router.push('/login')
+      await logout();
+      router.push('/login');
     } catch (error) {
-      console.error('Logout error:', error)
+      console.error('Logout error:', error);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -47,22 +60,25 @@ export default function Home() {
           <p className="mt-4 text-gray-600">로딩 중...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!isAuthenticated) {
-    return null
+    return null;
   }
 
   return (
     <>
       <Head>
         <title>RAG 기반 문서 검색 시스템</title>
-        <meta name="description" content="AI 기반 문서 검색 및 질의응답 시스템" />
+        <meta
+          name="description"
+          content="AI 기반 문서 검색 및 질의응답 시스템"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
@@ -71,10 +87,14 @@ export default function Home() {
               <h1 className="text-2xl font-bold text-gray-900">
                 RAG 문서 검색 시스템
               </h1>
-              
+
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-600">
-                  안녕하세요, <span className="font-medium">{user?.fullName || user?.username}</span>님
+                  안녕하세요,{' '}
+                  <span className="font-medium">
+                    {user?.fullName || user?.username}
+                  </span>
+                  님
                   <span className="ml-2 px-2 py-1 bg-gray-100 rounded text-xs">
                     {user?.role}
                   </span>
@@ -101,7 +121,7 @@ export default function Home() {
                 업로드된 문서에서 AI 기반 검색으로 정확한 답변을 찾아보세요
               </p>
             </div>
-            
+
             {/* Document Upload Section */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8">
               <h3 className="text-xl font-semibold mb-4">문서 업로드</h3>
@@ -118,7 +138,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            
+
             {/* Search Section */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-xl font-semibold mb-4">문서 검색</h3>
@@ -152,31 +172,105 @@ export default function Home() {
                   </button>
                 </div>
               </form>
+
+              {/* Search Results */}
+              {searchError && (
+                <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700">{searchError}</p>
+                </div>
+              )}
+
+              {searchResults && (
+                <div className="mt-6 space-y-6">
+                  {/* AI Answer */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 className="text-lg font-semibold text-blue-900 mb-3">
+                      🤖 AI 답변
+                    </h4>
+                    <p className="text-blue-800 leading-relaxed">
+                      {searchResults.answer}
+                    </p>
+                    <div className="mt-3 text-sm text-blue-600">
+                      처리 시간: {searchResults.processing_time.toFixed(2)}초
+                    </div>
+                  </div>
+
+                  {/* Search Results */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                      📄 관련 문서 ({searchResults.total_results}개)
+                    </h4>
+                    <div className="space-y-4">
+                      {searchResults.results.map((result, index) => (
+                        <div
+                          key={index}
+                          className="border border-gray-200 rounded-lg p-4"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h5 className="font-medium text-gray-900">
+                              {result.document_title}
+                            </h5>
+                            <span className="text-sm text-gray-500">
+                              신뢰도:{' '}
+                              {(result.confidence_score * 100).toFixed(1)}%
+                            </span>
+                          </div>
+                          <p className="text-gray-700 mb-2">{result.content}</p>
+                          <div className="text-sm text-gray-500">
+                            <span className="bg-gray-100 px-2 py-1 rounded">
+                              원본: {result.source_chunk}
+                            </span>
+                            {result.page_number && (
+                              <span className="ml-2">
+                                페이지: {result.page_number}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Start Guide */}
             <div className="mt-8 bg-blue-50 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-blue-900 mb-3">빠른 시작 가이드</h4>
+              <h4 className="text-lg font-semibold text-blue-900 mb-3">
+                빠른 시작 가이드
+              </h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-start">
-                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">1</span>
+                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">
+                    1
+                  </span>
                   <div>
                     <p className="font-medium text-blue-900">문서 업로드</p>
-                    <p className="text-blue-700">PDF, TXT, DOCX 파일을 업로드하세요</p>
+                    <p className="text-blue-700">
+                      PDF, TXT, DOCX 파일을 업로드하세요
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">2</span>
+                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">
+                    2
+                  </span>
                   <div>
                     <p className="font-medium text-blue-900">자연어 질문</p>
-                    <p className="text-blue-700">평소처럼 자연스럽게 질문하세요</p>
+                    <p className="text-blue-700">
+                      평소처럼 자연스럽게 질문하세요
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">3</span>
+                  <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold mr-3 mt-0.5">
+                    3
+                  </span>
                   <div>
                     <p className="font-medium text-blue-900">정확한 답변</p>
-                    <p className="text-blue-700">근거와 함께 즉시 답변을 받으세요</p>
+                    <p className="text-blue-700">
+                      근거와 함께 즉시 답변을 받으세요
+                    </p>
                   </div>
                 </div>
               </div>
@@ -185,5 +279,5 @@ export default function Home() {
         </main>
       </div>
     </>
-  )
-} 
+  );
+}

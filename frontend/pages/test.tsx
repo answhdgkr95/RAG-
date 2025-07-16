@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { SWRTest } from '../src/components/SWRTest';
 import { TailwindTest } from '../src/components/TailwindTest';
 
@@ -105,12 +106,12 @@ export default function TestPage() {
 
           {/* Navigation */}
           <div className="mt-12 text-center">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition duration-300"
             >
               ← 메인 페이지로 돌아가기
-            </a>
+            </Link>
           </div>
         </div>
       </div>
