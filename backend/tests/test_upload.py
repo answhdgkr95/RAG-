@@ -25,7 +25,8 @@ def test_upload_success():
     for ext in ALLOWED_EXTS:
         filename = f"test.{ext}"
         file = make_file(filename)
-        response = client.post("/api/documents/upload", files={"file": file})
+        with patch("api.documents.extract_text", return_value="테스트 텍스트"):
+            response = client.post("/api/documents/upload", files={"file": file})
         assert response.status_code == 200
         assert "file_id" in response.json()
 
@@ -67,9 +68,9 @@ def test_upload_virus_scan_error():
 
 def test_upload_success_s3():
     file = make_file("test.pdf")
-    with patch("api.documents.scan_virus", return_value=False), patch(
-        "api.documents.save_to_s3", return_value="https://s3-url"
-    ):
+    with patch("api.documents.extract_text", return_value="테스트 텍스트"), patch(
+        "api.documents.scan_virus", return_value=False
+    ), patch("api.documents.save_to_s3", return_value="https://s3-url"):
         response = client.post("/api/documents/upload", files={"file": file})
     assert response.status_code == 200
     data = response.json()

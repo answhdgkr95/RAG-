@@ -5,7 +5,7 @@
 아래 명령어를 순서대로 실행하여 모든 의존성을 설치하세요.
 
 ```bash
-pip install fastapi[all] pytest sqlalchemy psycopg2-binary pydantic python-multipart PyJWT passlib[bcrypt] python-jose python-docx PyPDF2 openai pymilvus
+pip install fastapi[all] pytest sqlalchemy psycopg2-binary pydantic python-multipart PyJWT passlib[bcrypt] python-jose python-docx PyPDF2 openai pymilvus boto3 tiktoken
 ```
 
 ### 라이브러리별 설명
@@ -22,6 +22,8 @@ pip install fastapi[all] pytest sqlalchemy psycopg2-binary pydantic python-multi
 - **PyPDF2**: PDF 문서 파싱
 - **openai**: OpenAI API 연동
 - **pymilvus**: Milvus 벡터DB 연동
+- **boto3**: AWS S3 연동 (문서/임베딩 결과 저장)
+- **tiktoken**: 텍스트 청킹 및 임베딩 토큰화 (OpenAI 모델 호환)
 
 ## 추가 참고
 - 위 명령어는 가상환경(venv) 활성화 후 실행하는 것을 권장합니다.

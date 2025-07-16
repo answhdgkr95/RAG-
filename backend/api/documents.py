@@ -1,13 +1,19 @@
 import json
+import logging
 import os
 import uuid
 
+import boto3
+from app.config import settings
 from app.services.document_chunker import ChunkingError, split_text_by_tokens
 from app.services.document_parser import DocumentParseError, extract_text
 from app.services.embedding_service import EmbeddingError, embed_chunks
 from app.services.milvus_service import MilvusError, insert_vectors
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -20,9 +26,55 @@ def scan_virus(contents: bytes) -> bool:
     return False
 
 
-def save_to_s3(file_id: str, filename: str, contents: bytes) -> str:
-    # 실제 S3 연동은 이후 구현, 여기선 presigned_url mock 반환
-    return "https://s3-url"
+def save_to_s3(
+    file_id: str, filename: str, contents: bytes, meta: dict | None = None
+) -> str:
+    """
+    S3에 원본 파일과 파싱/임베딩 결과(json)를 함께 저장하고 presigned_url을 반환한다.
+    파일명에 버전(타임스탬프) 포함, 실패 시 상세 로그 기록.
+    """
+    if not (
+        settings.AWS_ACCESS_KEY_ID
+        and settings.AWS_SECRET_ACCESS_KEY
+        and settings.S3_BUCKET_NAME
+    ):
+        logger.error("[S3 설정 오류] 환경변수 누락")
+        raise RuntimeError("S3 환경변수가 올바르게 설정되지 않았습니다.")
+    import time
+
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_REGION,
+    )
+    timestamp = int(time.time())
+    base, ext = os.path.splitext(filename)
+    s3_key = f"documents/{file_id}/{base}_{timestamp}{ext}"
+    meta_key = f"documents/{file_id}/{base}_{timestamp}.json"
+    try:
+        # 원본 파일 업로드
+        s3.put_object(Bucket=settings.S3_BUCKET_NAME, Key=s3_key, Body=contents)
+        # 파싱/임베딩 결과(meta) 업로드
+        if meta:
+            import json as _json
+
+            s3.put_object(
+                Bucket=settings.S3_BUCKET_NAME,
+                Key=meta_key,
+                Body=_json.dumps(meta, ensure_ascii=False).encode("utf-8"),
+                ContentType="application/json",
+            )
+        # presigned_url 생성 (다운로드용)
+        presigned_url = s3.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": settings.S3_BUCKET_NAME, "Key": s3_key},
+            ExpiresIn=3600,
+        )
+        return presigned_url
+    except (BotoCoreError, ClientError) as e:
+        logger.error(f"[S3 저장 실패] {filename}: {e}")
+        raise
 
 
 @router.post("/upload")
@@ -72,8 +124,20 @@ async def upload_document(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail="벡터 DB 저장 실패")
     file_id = str(uuid.uuid4())
     try:
-        presigned_url = save_to_s3(file_id, filename, contents)
+        # S3에 원본 + 파싱/임베딩 결과 저장
+        presigned_url = save_to_s3(
+            file_id,
+            filename,
+            contents,
+            meta={
+                "filename": filename,
+                "text": text,
+                "chunks": chunks,
+                "vector_ids": vector_ids,
+            },
+        )
     except Exception:
+        logger.error(f"[S3 저장 실패] {filename}", exc_info=True)
         raise HTTPException(status_code=500, detail="S3 저장 실패")
     # 4. 결과 반환
     return {
