@@ -1,6 +1,8 @@
 import logging
 from typing import List, Optional
 
+from app.services.embedding_service import EmbeddingError, embed_text
+from app.services.milvus_service import MilvusError, search_top_k
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
@@ -49,44 +51,45 @@ async def search_documents(request: SearchRequest):
     """
     try:
         logger.info(f"검색 요청 수신: {request.query[:100]}...")
-
-        # TODO: 실제 RAG 로직 구현
-        # 현재는 임시 응답으로 구현
-
-        # 임시 검색 결과 생성
-        mock_results = [
-            SearchResult(
-                content="안전 수칙에 따르면 작업 전 반드시 안전장비를 착용해야 합니다.",
-                document_title="안전 작업 매뉴얼",
-                page_number=1,
-                confidence_score=0.85,
-                source_chunk="안전 수칙: 작업 전 반드시 안전장비를 착용하세요.",
-            ),
-            SearchResult(
-                content="토크 값은 25Nm으로 설정되어야 합니다.",
-                document_title="설비 설치 가이드",
-                page_number=3,
-                confidence_score=0.92,
-                source_chunk="토크 설정: 25Nm으로 조정하세요.",
-            ),
-        ]
-
-        # 임시 AI 답변 생성
+        # 1. 쿼리 임베딩 변환
+        try:
+            query_embedding = await embed_text(request.query)
+        except EmbeddingError as e:
+            logger.error(f"쿼리 임베딩 실패: {e}")
+            raise HTTPException(status_code=500, detail="쿼리 임베딩 실패")
+        # 2. Milvus Top-k 검색
+        try:
+            milvus_results = search_top_k(query_embedding, k=request.max_results or 5)
+        except MilvusError as e:
+            logger.error(f"Milvus 검색 실패: {e}")
+            raise HTTPException(status_code=500, detail="벡터 DB 검색 실패")
+        # 3. 결과 변환
+        results = []
+        for r in milvus_results:
+            results.append(
+                SearchResult(
+                    content=r.get("text", ""),
+                    document_title=r.get("meta", {}).get(
+                        "document_title", "문서 제목 없음"
+                    ),
+                    page_number=r.get("meta", {}).get("page_number"),
+                    confidence_score=1.0 - r.get("score", 0.0),
+                    source_chunk=r.get("text", ""),
+                )
+            )
+        # 4. 임시 AI 답변 생성
         mock_answer = (
             f"질문 '{request.query}'에 대한 답변입니다. "
             "관련 문서에서 찾은 정보를 바탕으로 답변을 생성했습니다."
         )
-
         response = SearchResponse(
             answer=mock_answer,
-            results=mock_results[: request.max_results],
-            total_results=len(mock_results),
-            processing_time=0.5,
+            results=results,
+            total_results=len(results),
+            processing_time=0.5,  # TODO: 실제 처리 시간 측정
         )
-
         logger.info(f"검색 완료: {len(response.results)}개 결과 반환")
         return response
-
     except Exception as e:
         logger.error(f"검색 중 오류 발생: {str(e)}")
         raise HTTPException(

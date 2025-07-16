@@ -17,7 +17,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN ls -al node_modules/.bin && npx next build
 
 # Production image, copy all the files and run next
 FROM base AS runner
