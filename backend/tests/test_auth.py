@@ -10,7 +10,7 @@ settings = Settings()
 def test_token_success():
     # 올바른 사용자 정보로 토큰 요청
     response = client.post(
-        "/token", data={"username": "testuser", "password": "testpass"}
+        "/api/auth/token", data={"username": "testuser", "password": "testpass"}
     )
     assert response.status_code == 200
     data = response.json()
@@ -27,7 +27,7 @@ def test_token_success():
 def test_token_fail_wrong_password():
     # 잘못된 비밀번호
     response = client.post(
-        "/token", data={"username": "testuser", "password": "wrongpass"}
+        "/api/auth/token", data={"username": "testuser", "password": "wrongpass"}
     )
     assert response.status_code == 401
     assert "detail" in response.json()
@@ -36,7 +36,7 @@ def test_token_fail_wrong_password():
 def test_token_expiry():
     # 토큰 만료 시간 확인
     response = client.post(
-        "/token", data={"username": "testuser", "password": "testpass"}
+        "/api/auth/token", data={"username": "testuser", "password": "testpass"}
     )
     data = response.json()
     decoded = jwt.decode(

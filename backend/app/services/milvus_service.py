@@ -19,6 +19,11 @@ class MilvusError(Exception):
     pass
 
 
+def notify_admin(message: str):
+    # TODO: 실제 슬랙/이메일/알림 Hook으로 교체
+    print(f"[ALERT] {message}")
+
+
 def get_or_create_collection() -> Collection:
     connections.connect(host=MILVUS_HOST, port=MILVUS_PORT)
     if COLLECTION_NAME in Collection.list_collections():
@@ -50,7 +55,9 @@ def insert_vectors(chunks: List[Dict[str, Any]]) -> List[int]:
         except Exception as e:
             logger.error(f"[Milvus 저장 실패][{attempt}/3]: {e}")
             if attempt == max_retries:
+                notify_admin(f"Milvus 저장 실패(3회 재시도 후): {e}")
                 raise MilvusError(f"Milvus 저장 실패(3회 재시도 후): {e}")
+    return []
 
 
 def search_top_k(query_vector: List[float], k: int = 5) -> List[Dict]:
@@ -78,4 +85,6 @@ def search_top_k(query_vector: List[float], k: int = 5) -> List[Dict]:
         except Exception as e:
             logger.error(f"[Milvus 검색 실패][{attempt}/3]: {e}")
             if attempt == max_retries:
+                notify_admin(f"Milvus 검색 실패(3회 재시도 후): {e}")
                 raise MilvusError(f"Milvus 검색 실패(3회 재시도 후): {e}")
+    return []

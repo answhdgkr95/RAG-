@@ -7,8 +7,11 @@ import openai
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 
+# openai 1.x 방식: client 객체 생성
 if OPENAI_API_KEY:
-    openai.api_key = OPENAI_API_KEY
+    openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
+else:
+    openai_client = openai.OpenAI()
 
 
 class EmbeddingError(Exception):
@@ -20,8 +23,11 @@ async def embed_text(
 ) -> List[float]:
     for attempt in range(1, max_retries + 1):
         try:
-            response = await openai.Embedding.acreate(input=text, model=model)
-            return response["data"][0]["embedding"]
+            # openai 1.x 방식
+            response = await asyncio.to_thread(
+                openai_client.embeddings.create, input=text, model=model
+            )
+            return response.data[0].embedding
         except Exception as e:
             if attempt == max_retries:
                 raise EmbeddingError(f"임베딩 실패: {e}")
