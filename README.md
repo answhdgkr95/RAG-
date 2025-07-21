@@ -239,7 +239,7 @@ RAG-/
    
    # 테스트 환경 실행
    docker-compose -f docker-compose.test.yml up -d
-   ```
+   ``` 
 
 ### 개발 워크플로
 
